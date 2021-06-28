@@ -1,0 +1,61 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+
+<style>
+    .extrabutton {
+        color: white;
+        text-align: center;
+        font-size: 20px;
+    }
+</style>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+
+        {% if todos %}
+
+        <h1 style="font-size:52px;">{{ todos.count }} Current Todo{{ todos.count|pluralize }}</h1>
+
+        {% else %}
+
+        <h1 style="font-size:52px;">Current Todos</h1>
+
+        {% endif %}
+
+    </div>
+</div>
+
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+
+
+        {% if todos %}
+        <div class="list-group"><h4>
+
+        {% for todo in todos %}
+
+            <a href="{% url 'view_todo' todo.id %}" class="list-group-item list-group-item-action{% if todo.important %} list-group-item-info{% endif %}"><b>{{ todo.title }}</b>{% if todo.description %} : {{ todo.description|truncatechars:30 }} {% endif %}</a>
+
+        {% endfor %}
+        </h4></div>
+
+        {% else %}
+
+        <div class="text-center mt-4"><h1 style="font-size:38px;">
+            <br>Looks like you have completed all your todos... <br>
+            Great Job! 👍<br></h1>
+
+            <a role="button" href="{% url 'create_todo' %}" class=" btn btn-info extrabutton mt-4">Create</a>
+
+        </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

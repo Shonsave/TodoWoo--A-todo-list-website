@@ -1,0 +1,66 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+
+        <div class="text-center mb-5"><h1 style="font-size:45;"><u>{{ todo.title }}</u></h1></div>
+
+        {% if error %}}
+        <div class="alert alert-danger"><h2>{{ error }}</h2></div>
+        {% endif %}
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="form-group mt-2">
+            <label for="id_title"><h5>Title: </h5></label>
+            <input type="text" name="title" maxlength="100" id="id_title" class="form-control" value="{{todo.title}}" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="id_description"><h5>Description: </h5></label>
+            <textarea name="description" cols="100" rows="10" id="id_description" class="form-control">{{todo.description}}</textarea>
+        </div>
+        <div class="form-group form-check mt-3">
+            <input type="checkbox" name="important" id="id_important" class="form-check-input" {% if todo.important %}checked{% endif %}>
+            <label for="id_important" class="form-check-label"><h5>Important</h5></label>
+        </div>
+        <div class="form-group mt-3">
+            <label for="id_due_date"><h5>Due date: </h5></label>
+            <input type="date" name="due_date" id="id_due_date" class="form-control form-control-lg" value="{{ todo.due_date|date:'Y-m-d' }}">
+        </div>
+        <div class="form-group mt-3">
+            <label for="id_due_time"><h5>Due time: </h5></label>
+            <input type="time" name="due_time" id="id_due_time" class="form-control form-control-lg" value="{{ todo.due_time|time:'h:i:s' }}">
+        </div>
+        <div class="form-group mt-3">
+            <label for="id_tags"><h5>Tags: </h5></label>
+            <input type="text" name="tags" maxlength="40" id="id_tags" class="form-control" value="{{todo.tags}}">
+        </div>
+
+        <div class="text-center">
+
+            <button type="submit" class="btn btn-primary btn-lg mt-5">Save Changes</button>
+
+            <form method="post" action="{% url 'complete_todo' todo.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-lg mt-5" id="complete">Complete</button>
+            </form>
+
+            <form method="post" action="{% url 'delete_todo' todo.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-lg mt-5" id="delete">Delete</button>
+            </form>
+
+        </div>
+
+    </form>
+
+    </div>
+</div>
+
+
+{% endblock %}

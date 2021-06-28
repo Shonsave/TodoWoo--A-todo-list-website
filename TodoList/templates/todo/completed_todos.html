@@ -1,0 +1,41 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-10">
+
+        {% if todos %}
+
+        <h1>{{ todos.count }} Completed Todo{{ todos.count|pluralize }}</h1>
+
+        {% else %}
+
+        <h1>Completed Todos</h1>
+
+        {% endif %}
+
+    </div>
+</div>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-10">
+        <div class="list-group"></div>
+
+            {% for todo in todos %}
+            <h4>
+            <a href="{% url 'view_todo' todo.id %}" class="list-group-item list-group-item-action{% if todo.important %} list-group-item-info{% endif %}">
+                <b>{{ todo.title }}</b>
+                {% if todo.description %} : {{ todo.description|truncatechars:20 }} {% endif %}
+                <br>
+                {{ todo.date_completed|date:'M j Y H:i' }}
+            </a>
+            </h4>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
